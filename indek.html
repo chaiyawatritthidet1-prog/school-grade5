@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>โรงเรียนบ้านหอยใหญ่</title>
+<style>
+body { font-family: sans-serif; background: #f8faff; color: #003366; margin: 0; padding: 0;}
+header { background: #0044cc; color: white; text-align: center; padding: 20px;}
+main { max-width: 600px; margin: 30px auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+label, input, select, button { width: 100%; margin-top: 10px; font-size: 16px; }
+input, select { padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+button { background: #0066ff; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; }
+button:hover { background: #0044cc; }
+#gradeImage { display: none; margin-top: 20px; text-align: center; }
+#gradeImage img { max-width: 100%; border: 2px solid #0066ff; border-radius: 12px; }
+section.news { background: #e8f0ff; padding: 20px; margin-top: 40px; border-top: 4px solid #0066ff;}
+ul.news-list { list-style: none; padding: 0; }
+ul.news-list li { background: white; padding: 10px; margin-top: 8px; border-left: 4px solid #0066ff; border-radius: 8px;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>โรงเรียนบ้านหอยใหญ่</h1>
+<p>ระบบตรวจสอบผลการเรียนออนไลน์</p>
+</header>
+
+<main>
+<label for="studentId">รหัสนักเรียน:</label>
+<input type="text" id="studentId" placeholder="เช่น 654321">
+
+<label for="year">ปีการศึกษา:</label>
+<select id="year">
+<option value="">-- เลือกปีการศึกษา --</option>
+<option>2566</option>
+<option>2567</option>
+<option>2568</option>
+</select>
+
+<button onclick="showGrade()">ค้นหา</button>
+
+<div id="gradeImage">
+<img id="gradeImg" src="" alt="ใบเกรดนักเรียน">
+</div>
+</main>
+
+<section class="news">
+<h2>📢 ข่าวสารจากโรงเรียน</h2>
+<ul class="news-list">
+<li>เปิดรับสมัครนักเรียนใหม่ ปีการศึกษา 2568</li>
+<li>กิจกรรมวันครู 16 มกราคม</li>
+<li>ประกาศผลสอบกลางภาค ภาคเรียนที่ 1</li>
+</ul>
+</section>
+
+<script>
+// ฐานข้อมูลตัวอย่าง: รหัสนักเรียน + ปีที่มีใบเกรด
+const gradeDatabase = {
+  "654321": ["2567", "2568"],
+  "654322": ["2567"],
+  "654323": ["2566", "2567", "2568"]
+};
+
+function showGrade() {
+  const id = document.getElementById("studentId").value.trim();
+  const year = document.getElementById("year").value;
+
+  const gradeImageDiv = document.getElementById("gradeImage");
+  const imgElement = document.getElementById("gradeImg");
+
+  if (!id || !year) {
+    alert("กรุณากรอกรหัสนักเรียนและเลือกปีการศึกษา");
+    return;
+  }
+
+  // ตรวจสอบว่ามีรหัสนักเรียน + ปีในฐานข้อมูล
+  if (gradeDatabase[id] && gradeDatabase[id].includes(year)) {
+    imgElement.src = `grades/${id}_${year}.jpg`; // ใส่ path จริงของไฟล์
+    imgElement.style.display = "block";
+    gradeImageDiv.innerHTML = "";
+    gradeImageDiv.appendChild(imgElement);
+  } else {
+    // ถ้าไม่พบในระบบ
+    imgElement.style.display = "none";
+    gradeImageDiv.innerHTML = "<h3>ไม่พบในระบบ</h3>";
+  }
+
+  gradeImageDiv.style.display = "block";
+}
+</script>
+
+</body>
+</html>
